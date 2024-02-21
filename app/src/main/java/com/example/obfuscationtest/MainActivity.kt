@@ -13,19 +13,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.example.obfuscationtest.KafkaLoader.decode
-import com.example.obfuscationtest.KafkaLoader.decodeArrayList
-import com.example.obfuscationtest.KafkaLoader.encode
-import com.example.obfuscationtest.KafkaLoader.encodeArrayListWithoutReturn
-import com.example.obfuscationtest.KafkaLoader.getServerUrls
-import com.example.obfuscationtest.KafkaLoader.getUrl
-import com.example.obfuscationtest.KafkaLoader.lambdaCaller
-import com.example.obfuscationtest.KafkaLoader.lambdaCaller2
+import com.example.obfuscationtest.kafka.KafKeys
+import com.example.obfuscationtest.kafka.KafLoader.decode
+import com.example.obfuscationtest.kafka.KafLoader.decodeArrayList
+import com.example.obfuscationtest.kafka.KafLoader.encode
+import com.example.obfuscationtest.kafka.KafLoader.encodeArrayListWithoutReturn
+import com.example.obfuscationtest.kafka.KafLoader.KAFKA
+import com.example.obfuscationtest.kafka.KafLoader.getServerUrls
+import com.example.obfuscationtest.kafka.KafLoader.getUrl
 import com.example.obfuscationtest.ui.theme.ObfuscationTestTheme
 
 class MainActivity : ComponentActivity() {
@@ -62,13 +61,18 @@ class MainActivity : ComponentActivity() {
                         for (string in newArray)
                             Text(string)
                         NewExample("lambdaCaller()")
-                        val list = ArrayList<Int>()
-                        lambdaCaller(5) { random ->
-                            list.add(random)
-                            random
-                        }
-                        lambdaCaller2(20) { random -> list.add(random) }
-                        list.forEach{ Text(it.toString()) }
+//                        val list = ArrayList<Int>()
+//                        lambdaCaller(5) { random ->
+//                            list.add(random)
+//                            random
+//                        }
+//                        lambdaCaller2(20) { random -> list.add(random) }
+//                        list.forEach{ Text(it.toString()) }
+                        NewExample("get()")
+                        Text(KAFKA(KafKeys.GOOGLE))
+                        Text(KAFKA(KafKeys.GMAIL))
+                        Text(KAFKA(KafKeys.OUTLOOK))
+                        Text(KAFKA(KafKeys.PROTON))
                     }
                 }
             }

@@ -1,19 +1,29 @@
 #include <jni.h>
 #include <string>
 #include <android/log.h>
+#include <unordered_map>
 
 #include "base64.h"
 #include "utilities.h"
+#include "obfuscate.h"
 
-auto BASE_URL_PROD = "https://twitter.com/";
-const char *URLS_LIST[] = {"https://account.proton.me/",
-                           "https://mail.google.com/mail/u/0/",
-                           "https://outlook.live.com/"};
+const char *BASE_URL_PROD = AY_OBFUSCATE("https://twitter.com/");
+const char *URLS_LIST[] = {AY_OBFUSCATE("https://account.proton.me/"),
+                           AY_OBFUSCATE("https://mail.google.com/mail/u/0/"),
+                           AY_OBFUSCATE("https://outlook.live.com/")};
+
+// Global unordered_map initialized with key-value pairs
+std::unordered_map<std::string, std::string> hashmap = {
+        {std::string(AY_OBFUSCATE("d0e196a0c25d35dd0a84593cbae0f38333aa58529936444ea26453eab28dfc86")), std::string(AY_OBFUSCATE("https://www.google.com/"))},
+        {std::string(AY_OBFUSCATE("0de69f56365c10550d05e65ae8229dd0686f7894a807830daec8caa879731f4d")), std::string(AY_OBFUSCATE("https://mail.google.com/mail/u/0/#inbox"))},
+        {std::string(AY_OBFUSCATE("db902c3abfb8b6c3beecc6cb91e014140b2ab1fe9fd5388b838352bc44dd1f92")), std::string(AY_OBFUSCATE("https://outlook.live.com/mail/0/"))},
+        {std::string(AY_OBFUSCATE("26a978f15358def42114a8db2419316016e512ad3c8520e73d52c963d2a1effc")), std::string(AY_OBFUSCATE("https://account.proton.me/login"))}
+};
 
 // Example return string
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_obfuscationtest_KafkaLoader_getUrl(JNIEnv *env, jobject clazz) {
+Java_com_example_obfuscationtest_kafka_KafLoader_getUrl(JNIEnv *env, jobject thiz) {
     std::string encoded = base64_encode(BASE_URL_PROD);
     std::string decoded = base64_decode(encoded);
     return env->NewStringUTF(decoded.c_str());
@@ -22,7 +32,7 @@ Java_com_example_obfuscationtest_KafkaLoader_getUrl(JNIEnv *env, jobject clazz) 
 // Example encode base64
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_obfuscationtest_KafkaLoader_encode(JNIEnv *env, jobject clazz, jstring in_string) {
+Java_com_example_obfuscationtest_kafka_KafLoader_encode(JNIEnv *env, jobject thiz, jstring in_string) {
     std::string javastring = jstring_to_stdstring(env, in_string);
     std::string encoded = base64_encode(javastring);
     return env->NewStringUTF(encoded.c_str());
@@ -31,7 +41,7 @@ Java_com_example_obfuscationtest_KafkaLoader_encode(JNIEnv *env, jobject clazz, 
 // Example decode base64
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_obfuscationtest_KafkaLoader_decode(JNIEnv *env, jobject clazz, jstring in_string) {
+Java_com_example_obfuscationtest_kafka_KafLoader_decode(JNIEnv *env, jobject thiz, jstring in_string) {
     std::string javastring = jstring_to_stdstring(env, in_string);
     std::string decoded = base64_decode(javastring);
     return env->NewStringUTF(decoded.c_str());
@@ -40,7 +50,7 @@ Java_com_example_obfuscationtest_KafkaLoader_decode(JNIEnv *env, jobject clazz, 
 // Example output ArrayList<String>
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_com_example_obfuscationtest_KafkaLoader_getServerUrls(JNIEnv *env, jobject clazz) {
+Java_com_example_obfuscationtest_kafka_KafLoader_getServerUrls(JNIEnv *env, jobject thiz) {
     // Step 1: Create an ArrayList object
     jclass arrayListClass = env->FindClass("java/util/ArrayList");
     jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
@@ -66,7 +76,7 @@ Java_com_example_obfuscationtest_KafkaLoader_getServerUrls(JNIEnv *env, jobject 
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_obfuscationtest_KafkaLoader_encodeArrayListWithoutReturn(JNIEnv *env, jobject clazz, jobject list) {
+Java_com_example_obfuscationtest_kafka_KafLoader_encodeArrayListWithoutReturn(JNIEnv *env, jobject thiz, jobject list) {
     // Get the ArrayList class and methods
     jclass arrayListClass = env->GetObjectClass(list);
     jmethodID getMethod = env->GetMethodID(arrayListClass, "get", "(I)Ljava/lang/Object;");
@@ -99,7 +109,7 @@ Java_com_example_obfuscationtest_KafkaLoader_encodeArrayListWithoutReturn(JNIEnv
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_com_example_obfuscationtest_KafkaLoader_decodeArrayList(JNIEnv *env, jobject clazz, jobject list) {
+Java_com_example_obfuscationtest_kafka_KafLoader_decodeArrayList(JNIEnv *env, jobject thiz, jobject list) {
     // Find the ArrayList class and get its methods
     jclass arrayListClass = env->FindClass("java/util/ArrayList");
     jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
@@ -137,8 +147,8 @@ Java_com_example_obfuscationtest_KafkaLoader_decodeArrayList(JNIEnv *env, jobjec
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_obfuscationtest_KafkaLoader_lambdaCaller(JNIEnv *env, jobject thiz, jint repeat,
-                                                          jobject lambda) {
+Java_com_example_obfuscationtest_kafka_KafLoader_lambdaCaller(JNIEnv *env, jobject thiz, jint repeat,
+                                                              jobject lambda) {
 
     jclass lambdaClass = env->GetObjectClass(lambda);
     if (lambdaClass == nullptr) return; // Class not found
@@ -184,7 +194,7 @@ Java_com_example_obfuscationtest_KafkaLoader_lambdaCaller(JNIEnv *env, jobject t
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_obfuscationtest_KafkaLoader_lambdaCaller2(JNIEnv *env, jobject thiz, jint repeat, jobject lambda) {
+Java_com_example_obfuscationtest_kafka_KafLoader_lambdaCaller2(JNIEnv *env, jobject thiz, jint repeat, jobject lambda) {
     jclass lambdaClass = env->GetObjectClass(lambda);
     if (lambdaClass == nullptr) return; // Class not found
 
@@ -217,4 +227,24 @@ Java_com_example_obfuscationtest_KafkaLoader_lambdaCaller2(JNIEnv *env, jobject 
     }
 
     env->DeleteLocalRef(integerClass);
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_obfuscationtest_kafka_KafLoader_nessunDorma(JNIEnv *env, jobject thiz, jstring keyJavaString) {
+    // Convert Java string to C++ string
+    const char *keyCStr = env->GetStringUTFChars(keyJavaString, nullptr);
+    std::string keyCppStr(keyCStr);
+    env->ReleaseStringUTFChars(keyJavaString, keyCStr);
+
+    // Look up the key in the hashmap
+    auto it = hashmap.find(keyCppStr);
+    if (it != hashmap.end()) {
+        // Found the key, return its associated value
+        const std::string& value = it->second;
+        return env->NewStringUTF(value.c_str());
+    } else {
+        // Key not found, return null or an appropriate value
+        return env->NewStringUTF(AY_OBFUSCATE("ERROR"));
+    }
 }
