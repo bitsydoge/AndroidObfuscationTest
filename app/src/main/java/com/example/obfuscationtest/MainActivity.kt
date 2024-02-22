@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.obfuscationtest.kafka.KafKeys
 import com.example.obfuscationtest.kafka.KafLoader.decode64
@@ -25,6 +26,8 @@ import com.example.obfuscationtest.kafka.KafLoader.encode64ArrayListNoRet
 import com.example.obfuscationtest.kafka.KafLoader.KAFKA
 import com.example.obfuscationtest.kafka.KafLoader.getUrls
 import com.example.obfuscationtest.kafka.KafLoader.getUrl
+import com.example.obfuscationtest.kafka.KafLoader.lambdaCaller
+import com.example.obfuscationtest.kafka.KafLoader.lambdaCaller2
 import com.example.obfuscationtest.ui.theme.ObfuscationTestTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,41 +45,48 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                        NewExample("encode()", false)
-                        Text(encode64(getUrl()))
-                        NewExample("decode()")
-                        Text(decode64(encode64(getUrl())))
-                        NewExample("getServerUrls()")
-                        for (url in getUrls()){
-                            Text(url)
-                        }
-                        NewExample("encodeArrayListWithoutReturn()")
-                        val myRef = getUrls()
-                        encode64ArrayListNoRet(myRef)
-                        for (string in myRef) {
-                            Text(string)
-                        }
-                        NewExample("decodeArrayList()")
-                        val newArray = decode64ArrayList(myRef)
-                        for (string in newArray)
-                            Text(string)
-                        NewExample("lambdaCaller()")
-//                        val list = ArrayList<Int>()
-//                        lambdaCaller(5) { random ->
-//                            list.add(random)
-//                            random
-//                        }
-//                        lambdaCaller2(20) { random -> list.add(random) }
-//                        list.forEach{ Text(it.toString()) }
-                        NewExample("get()")
-                        Text(KAFKA(KafKeys.GOOGLE))
-                        Text(KAFKA(KafKeys.GMAIL))
-                        Text(KAFKA(KafKeys.OUTLOOK))
-                        Text(KAFKA(KafKeys.PROTON))
+                        MainView()
                     }
                 }
             }
         }
+    }
+
+    @Preview
+    @Composable
+    private fun MainView() {
+        NewExample("encode()", false)
+        Text(encode64(getUrl()))
+        NewExample("decode()")
+        Text(decode64(encode64(getUrl())))
+        NewExample("getServerUrls()")
+        for (url in getUrls()) {
+            Text(url)
+        }
+        NewExample("encodeArrayListWithoutReturn()")
+        val myRef = getUrls()
+        encode64ArrayListNoRet(myRef)
+        for (string in myRef) {
+            Text(string)
+        }
+        NewExample("decodeArrayList()")
+        val newArray = decode64ArrayList(myRef)
+        for (string in newArray)
+            Text(string)
+        NewExample("lambdaCaller()")
+        val list = ArrayList<Int>()
+        lambdaCaller(5) { random ->
+            list.add(random)
+            random
+        }
+        NewExample("lambdaCaller2()")
+        lambdaCaller2(20) { random -> list.add(random) }
+        list.forEach{ Text(it.toString()) }
+        NewExample("get()")
+        Text(KAFKA(KafKeys.GOOGLE))
+        Text(KAFKA(KafKeys.GMAIL))
+        Text(KAFKA(KafKeys.OUTLOOK))
+        Text(KAFKA(KafKeys.PROTON))
     }
 
     @Composable
