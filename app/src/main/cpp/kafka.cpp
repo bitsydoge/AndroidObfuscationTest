@@ -32,7 +32,7 @@ Java_com_example_obfuscationtest_kafka_KafLoader_getUrl(JNIEnv *env, jobject thi
 // Example encode base64
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_obfuscationtest_kafka_KafLoader_encode(JNIEnv *env, jobject thiz, jstring in_string) {
+Java_com_example_obfuscationtest_kafka_KafLoader_encode64(JNIEnv *env, jobject thiz, jstring in_string) {
     std::string javastring = jstring_to_stdstring(env, in_string);
     std::string encoded = base64_encode(javastring);
     return env->NewStringUTF(encoded.c_str());
@@ -41,7 +41,7 @@ Java_com_example_obfuscationtest_kafka_KafLoader_encode(JNIEnv *env, jobject thi
 // Example decode base64
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_obfuscationtest_kafka_KafLoader_decode(JNIEnv *env, jobject thiz, jstring in_string) {
+Java_com_example_obfuscationtest_kafka_KafLoader_decode64(JNIEnv *env, jobject thiz, jstring in_string) {
     std::string javastring = jstring_to_stdstring(env, in_string);
     std::string decoded = base64_decode(javastring);
     return env->NewStringUTF(decoded.c_str());
@@ -50,7 +50,7 @@ Java_com_example_obfuscationtest_kafka_KafLoader_decode(JNIEnv *env, jobject thi
 // Example output ArrayList<String>
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_com_example_obfuscationtest_kafka_KafLoader_getServerUrls(JNIEnv *env, jobject thiz) {
+Java_com_example_obfuscationtest_kafka_KafLoader_getUrls(JNIEnv *env, jobject thiz) {
     // Step 1: Create an ArrayList object
     jclass arrayListClass = env->FindClass("java/util/ArrayList");
     jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");
@@ -76,7 +76,7 @@ Java_com_example_obfuscationtest_kafka_KafLoader_getServerUrls(JNIEnv *env, jobj
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_com_example_obfuscationtest_kafka_KafLoader_encodeArrayListWithoutReturn(JNIEnv *env, jobject thiz, jobject list) {
+Java_com_example_obfuscationtest_kafka_KafLoader_encode64ArrayListNoRet(JNIEnv *env, jobject thiz, jobject list) {
     // Get the ArrayList class and methods
     jclass arrayListClass = env->GetObjectClass(list);
     jmethodID getMethod = env->GetMethodID(arrayListClass, "get", "(I)Ljava/lang/Object;");
@@ -109,7 +109,7 @@ Java_com_example_obfuscationtest_kafka_KafLoader_encodeArrayListWithoutReturn(JN
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_com_example_obfuscationtest_kafka_KafLoader_decodeArrayList(JNIEnv *env, jobject thiz, jobject list) {
+Java_com_example_obfuscationtest_kafka_KafLoader_decode64ArrayList(JNIEnv *env, jobject thiz, jobject list) {
     // Find the ArrayList class and get its methods
     jclass arrayListClass = env->FindClass("java/util/ArrayList");
     jmethodID arrayListConstructor = env->GetMethodID(arrayListClass, "<init>", "()V");

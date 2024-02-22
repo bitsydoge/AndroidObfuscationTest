@@ -18,12 +18,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.obfuscationtest.kafka.KafKeys
-import com.example.obfuscationtest.kafka.KafLoader.decode
-import com.example.obfuscationtest.kafka.KafLoader.decodeArrayList
-import com.example.obfuscationtest.kafka.KafLoader.encode
-import com.example.obfuscationtest.kafka.KafLoader.encodeArrayListWithoutReturn
+import com.example.obfuscationtest.kafka.KafLoader.decode64
+import com.example.obfuscationtest.kafka.KafLoader.decode64ArrayList
+import com.example.obfuscationtest.kafka.KafLoader.encode64
+import com.example.obfuscationtest.kafka.KafLoader.encode64ArrayListNoRet
 import com.example.obfuscationtest.kafka.KafLoader.KAFKA
-import com.example.obfuscationtest.kafka.KafLoader.getServerUrls
+import com.example.obfuscationtest.kafka.KafLoader.getUrls
 import com.example.obfuscationtest.kafka.KafLoader.getUrl
 import com.example.obfuscationtest.ui.theme.ObfuscationTestTheme
 
@@ -43,21 +43,21 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                         NewExample("encode()", false)
-                        Text(encode(getUrl()))
+                        Text(encode64(getUrl()))
                         NewExample("decode()")
-                        Text(decode(encode(getUrl())))
+                        Text(decode64(encode64(getUrl())))
                         NewExample("getServerUrls()")
-                        for (url in getServerUrls()){
+                        for (url in getUrls()){
                             Text(url)
                         }
                         NewExample("encodeArrayListWithoutReturn()")
-                        val myRef = getServerUrls()
-                        encodeArrayListWithoutReturn(myRef)
+                        val myRef = getUrls()
+                        encode64ArrayListNoRet(myRef)
                         for (string in myRef) {
                             Text(string)
                         }
                         NewExample("decodeArrayList()")
-                        val newArray = decodeArrayList(myRef)
+                        val newArray = decode64ArrayList(myRef)
                         for (string in newArray)
                             Text(string)
                         NewExample("lambdaCaller()")
