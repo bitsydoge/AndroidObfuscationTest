@@ -1,14 +1,11 @@
-//
-// Created by Doge on 20/02/2024.
-//
+#ifndef _BASE64_H_
+#define _BASE64_H_
 
-#ifndef OBFUSCATIONTEST_BASE64_H
-#define OBFUSCATIONTEST_BASE64_H
-
+#include <vector>
 #include <string>
+typedef unsigned char BYTE;
 
-std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len);
-std::string base64_encode(const std::string& s);
-std::string base64_decode(std::string const& encoded_string);
+std::string base64_encode(BYTE const* buf, unsigned int bufLen);
+std::vector<BYTE> base64_decode(std::string const&);
 
-#endif //OBFUSCATIONTEST_BASE64_H
+#endif

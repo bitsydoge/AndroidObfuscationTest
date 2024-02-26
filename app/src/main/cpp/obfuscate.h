@@ -9,13 +9,13 @@ Guaranteed compile-time string literal obfuscation library for C++14
 
 Usage:
 Pass string literals into the AY_OBFUSCATE macro to obfuscate them at compile
-time. AY_OBFUSCATE returns a reference to an ay::obfuscated_data object with the
+time. AY_OBFUSCATE returns a reference to an ay::obfuscated_data_crypt object with the
 following traits:
 	- Guaranteed obfuscation of string
 	The passed string is encrypted with a simple XOR cipher at compile-time to
 	prevent it being viewable in the binary image
 	- Global lifetime
-	The actual instantiation of the ay::obfuscated_data takes place inside a
+	The actual instantiation of the ay::obfuscated_data_crypt takes place inside a
 	lambda as a function level static
 	- Implicitly convertible to a char*
 	This means that you can pass it directly into functions that would normally
@@ -218,12 +218,12 @@ constexpr auto make_obfuscator(const CHAR_TYPE(&data)[N])
 }
 
 // Obfuscates the string 'data' at compile-time and returns a reference to a
-// ay::obfuscated_data object with global lifetime that has functions for
+// ay::obfuscated_data_crypt object with global lifetime that has functions for
 // decrypting the string and is also implicitly convertable to a char*
 #define AY_OBFUSCATE(data) AY_OBFUSCATE_KEY(data, AY_OBFUSCATE_DEFAULT_KEY)
 
 // Obfuscates the string 'data' with 'key' at compile-time and returns a
-// reference to a ay::obfuscated_data object with global lifetime that has
+// reference to a ay::obfuscated_data_crypt object with global lifetime that has
 // functions for decrypting the string and is also implicitly convertable to a
 // char*
 #define AY_OBFUSCATE_KEY(data, key) \
